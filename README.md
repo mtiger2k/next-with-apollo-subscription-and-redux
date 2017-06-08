@@ -1,1 +1,0 @@
-# next-with-apollo-subscription-and-redux
