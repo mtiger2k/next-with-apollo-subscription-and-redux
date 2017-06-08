@@ -64,6 +64,9 @@ export default graphql(createPost, {
   props: ({ mutate }) => ({
     createPost: (title, url) => mutate({
       variables: { title, url },
+      optimisticResponse: {
+        createPost: {id: (new Date()).getTime(), title, url, votes: 0, createdAt: new Date()}
+      },
       updateQueries: {
         allPosts: (previousResult, { mutationResult }) => {
           const newPost = mutationResult.data.createPost

@@ -48,7 +48,7 @@ const graphiqlOptions = {
 
   httpServer.listen(4000, '0.0.0.0', (err) => {
     if (err) throw err
-    console.log('> ready on localhost:3000')
+    console.log('> ready on localhost:4000')
   })
 
   new SubscriptionServer(
