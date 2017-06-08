@@ -1,0 +1,23 @@
+{
+  "name": "with-apollo-and-redux",
+  "version": "2.0.0",
+  "scripts": {
+    "dev": "node ./src/server.js",
+    "start": "NODE_ENV=production babel-node server.js",
+    "build": "NODE_ENV=production next build"
+  },
+  "dependencies": {
+    "express": "^4.15.3",
+    "graphql": "^0.10.1",
+    "isomorphic-fetch": "^2.2.1",
+    "next": "^2.4.3",
+    "prop-types": "^15.5.8",
+    "react": "^15.5.4",
+    "react-apollo": "^1.4.2",
+    "react-dom": "^15.5.4",
+    "redux": "^3.6.0",
+    "subscriptions-transport-ws": "^0.7.1"
+  },
+  "author": "",
+  "license": "ISC"
+}
