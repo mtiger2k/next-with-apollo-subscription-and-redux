@@ -16,10 +16,11 @@ class Layout extends React.Component {
 		  <Navbar fixedTop>
 		    <Navbar.Header>
 		      <Navbar.Brand>
-		        <div className="brand" />
+		        <div className="brand" >
 		        <Link prefetch href='/'>
 		        <a>Next-Apollo</a>
 		        </Link>
+		        </div>
 		      </Navbar.Brand>
 		      <Navbar.Toggle />
 		    </Navbar.Header>
@@ -55,16 +56,21 @@ class Layout extends React.Component {
 
 	    <style jsx>{`
 		  .app .brand {
-		    position: absolute;
+		    text-decoration: none;
 		    top: 5px;
 		    left: 5px;
-		    display: inline-block;
+		    border: 0;
 		    background: #2d2d2d url('/static/logo.png') no-repeat center center;
 		    width: 40px;
 		    height: 40px;
 		    background-size: 80%;
-		    margin: 0 10px 0 0;
+		    margin: 5px 10px 0 0;
 		    border-radius: 20px;
+		  }
+		  .app .brand a {
+		  	display: block;
+		  	height: 40px;
+		  	text-indent: -9999px;
 		  }
 		  .app nav :global(.fa) {
 		    font-size: 2em;
