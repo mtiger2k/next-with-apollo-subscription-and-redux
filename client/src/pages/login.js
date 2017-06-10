@@ -3,7 +3,7 @@ import Login from '../components/Login'
 import withData from '../lib/withData'
 
 export default withData((props) => (
-  <Layout>
+  <Layout title='Login'>
     <div className="container">
     <Login />
     </div>

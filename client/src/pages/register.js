@@ -3,7 +3,7 @@ import Register from '../components/Register'
 import withData from '../lib/withData'
 
 export default withData((props) => (
-  <Layout>
+  <Layout title='Register'>
     <div className="container">
     <Register />
     </div>

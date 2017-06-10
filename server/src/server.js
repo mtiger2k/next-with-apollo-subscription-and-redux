@@ -5,6 +5,9 @@ import { graphqlExpress, graphiqlExpress } from 'graphql-server-express'
 import { SubscriptionServer } from 'subscriptions-transport-ws'
 import bodyParser from 'body-parser'
 import { execute, subscribe } from 'graphql'
+
+import {apolloUploadExpress} from 'apollo-upload-server'
+
 import { schema } from './schema'
 import UserModel from './User';
 const jwt = require('jwt-simple');
@@ -84,7 +87,12 @@ const tokenParser = () => {
 server.use(tokenParser());
 
 
-  server.use(graphqlPath, cors(), bodyParser.json(), graphqlExpress(req => {
+  server.use(graphqlPath, 
+    cors(), bodyParser.json(), 
+    apolloUploadExpress({
+      uploadDir: '/tmp/uploads'
+    }),
+    graphqlExpress(req => {
     const query = req.query.query || req.body.query
     if (query && query.length > 2000) {
       throw new Error('Query too large.')

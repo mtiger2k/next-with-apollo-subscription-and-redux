@@ -5,6 +5,7 @@
     "dev": "nodemon ./src/server.js --exec babel-node -e js"
   },
   "dependencies": {
+    "apollo-upload-server": "^2.0.1",
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.5.0",
     "cors": "^2.8.3",

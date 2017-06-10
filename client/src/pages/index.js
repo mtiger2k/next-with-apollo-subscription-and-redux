@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/lib/Button'
 import { authenticate } from '../utils/AuthService'
 
 const Page = (props) => (
-  <Layout user={props.user}>
+  <Layout user={props.user} title='Home'>
     <div className="container">
       <Jumbotron>
 	    <h1>Hello, world!</h1>

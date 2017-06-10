@@ -14,7 +14,7 @@ class PostPage extends React.Component {
 
   render() {
 	return (
-	  <Layout user={this.props.user}>
+	  <Layout user={this.props.user} title='Post List'>
 	    <div className="container">
 	    <Submit />
 	    <hr/>

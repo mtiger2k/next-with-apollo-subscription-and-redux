@@ -6,13 +6,17 @@ import NavItem from 'react-bootstrap/lib/NavItem';
 import NavDropdown from 'react-bootstrap/lib/NavDropdown';
 import { logout } from '../utils/AuthService'
 import Link from 'next/link'
+import Head from 'next/head'
 
 class Layout extends React.Component {
 
   render() {
-	const { user } = this.props
+	const { user, title } = this.props
 	return (
 	  <div className='app'>
+		  <Head>
+	      	<title>{title}</title>
+	      </Head>
 		  <Navbar fixedTop>
 		    <Navbar.Header>
 		      <Navbar.Brand>

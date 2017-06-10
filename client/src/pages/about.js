@@ -3,7 +3,7 @@ import withData from '../lib/withData'
 import { authenticate } from '../utils/AuthService'
 
 const Page =  (props) => (
-  <Layout user={props.user}>
+  <Layout user={props.user} title='About'>
     <div className="container">
     <article>
       <h1>The Idea Behind This Example</h1>

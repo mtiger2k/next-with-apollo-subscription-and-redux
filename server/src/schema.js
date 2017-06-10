@@ -5,6 +5,8 @@ import PostModel from './Post'
 import UserModel from './User'
 import logger from './logger'
 
+const fs = require('fs');
+
 const pubsub = new PubSub()
 const typeDefs = [`
 
@@ -36,6 +38,20 @@ const typeDefs = [`
     createdAt_DESC
   }
 
+  input Upload {
+    name: String!
+    type: String!
+    size: Int!
+    path: String!
+  }
+
+  type File {
+    name: String!
+    type: String!
+    size: Int!
+    path: String!
+  }
+
   type Query {
     me: User
     allPosts(orderBy: OrderPost, skip: Int, first: Int): [Post]
@@ -47,6 +63,8 @@ const typeDefs = [`
     register(dispName: String, username: String, password: String): User
     createPost(title: String, url: String): Post
     updatePost(id: String, votes: Int): Post
+    singleUpload (file: Upload!): File!
+    multipleUpload (files: [Upload!]!): [File!]!
   }
 
   type Subscription {
@@ -116,6 +134,19 @@ const resolvers = {
     },
     updatePost (root, {id, votes}) {
       return PostModel.findOneAndUpdate({_id: id}, {$set: {votes}}, {new: true});
+    },
+    singleUpload (_, {file}) {
+      fs.rename(file.path, '/your/upload/' + file.name, function (err) {
+          console.log('uploaded: ' + file.name);
+          if (err) {
+            console.log(err)
+          }
+      })
+      return {...file};
+    },
+    multipleUpload (_, {files}) {
+      files.map(file => console.log(`uploaded size is ${file.size}`))
+      return [...files];
     }
   },
   Subscription: {
