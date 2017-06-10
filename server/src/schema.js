@@ -1,9 +1,9 @@
 import { makeExecutableSchema } from 'graphql-tools'
 import { withFilter, PubSub } from 'graphql-subscriptions'
-
 import jwt from 'jwt-simple';
 import PostModel from './Post'
 import UserModel from './User'
+import logger from './logger'
 
 const pubsub = new PubSub()
 const typeDefs = [`
@@ -122,11 +122,11 @@ const resolvers = {
     postAdded: {
       subscribe: withFilter(
         () => {
-          console.log('post subscribed!')
+          logger.info('post subscribed!')
           return pubsub.asyncIterator('postAdded')
         },
         (payload) => {
-          console.log('new post', payload)
+          logger.debug('new post', payload)
           return true
         }
       )
