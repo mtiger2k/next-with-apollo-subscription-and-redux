@@ -1,10 +1,24 @@
 import { makeExecutableSchema } from 'graphql-tools'
 import { withFilter, PubSub } from 'graphql-subscriptions'
 
+import jwt from 'jwt-simple';
 import PostModel from './Post'
+import UserModel from './User'
 
 const pubsub = new PubSub()
 const typeDefs = [`
+
+  type User {
+    id: String!
+    username: String!
+    dispName: String!
+  }
+
+  type UserToken {
+    userId: String!,
+    token: String!,
+    user: User
+  }
 
   type Post {
     id: String
@@ -23,11 +37,14 @@ const typeDefs = [`
   }
 
   type Query {
+    me: User
     allPosts(orderBy: OrderPost, skip: Int, first: Int): [Post]
     _allPostsMeta: Count
   }
 
   type Mutation {
+    login(username: String!, password: String!): UserToken
+    register(dispName: String, username: String, password: String): User
     createPost(title: String, url: String): Post
     updatePost(id: String, votes: Int): Post
   }
@@ -46,6 +63,9 @@ let nextMessage = 4
 
 const resolvers = {
   Query: {
+    me: (root, args) => {
+        return root.user;
+    },
     allPosts: (root, {orderBy, skip, first}, context) => {
       return PostModel.find({}, null, {skip, limit: first});
     },
@@ -60,6 +80,29 @@ const resolvers = {
     }
   },
   Mutation: {
+    login: (root, args) => {
+        return UserModel.findOne({username: args.username})
+        .then((user) => {
+            if (!user || !user.validPassword(args.password)) {
+                throw new Error("Username or password not match");
+            }
+
+            return Promise.resolve({
+                userId: user._id,
+                token: jwt.encode({ sub: user._id, iat: new Date().getTime(), login: user.username, }, process.env.SECRET)
+            });
+        });
+    },
+    register: (root, args) => {
+        return UserModel.findOne({username: args.username})
+        .then((user) => {
+            if (user) {
+                throw new Error("Username already exist");
+            }
+
+            return (new UserModel(args)).save();
+        });            
+    },
     createPost (root, {title, url}) {
       return new Promise((resolve, reject) => {
         let newPost = new PostModel({title, url, createdAt: new Date(), votes: 0});
@@ -88,7 +131,13 @@ const resolvers = {
         }
       )
     }    
+  },
+  UserToken: {
+      user(userToken) {
+          return UserModel.findById(userToken.userId);
+      }
   }
+
 }
 
 export const schema = makeExecutableSchema({

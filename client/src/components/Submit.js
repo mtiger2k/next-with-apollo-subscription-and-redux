@@ -1,49 +1,49 @@
 import { gql, graphql } from 'react-apollo'
+import FormGroup from 'react-bootstrap/lib/FormGroup';
+import FormControl from 'react-bootstrap/lib/FormControl';
+import Button from 'react-bootstrap/lib/Button';
+import { reduxForm, Field, SubmissionError } from 'redux-form';
 
-function Submit ({ createPost }) {
-  function handleSubmit (e) {
-    e.preventDefault()
+const validate = values => {
+  const errors = {}
+  if (!values.title) {
+    errors.title = 'Required'
+  }
+  if (!values.url) {
+    errors.url = 'Required'
+  }
+  return errors
+}
 
-    let title = e.target.elements.title.value
-    let url = e.target.elements.url.value
-
-    if (title === '' || url === '') {
-      window.alert('Both fields are required.')
-      return false
-    }
-
+const submit = async (values, dispatch, props) => {
+  try {
+    let url = values.url;
     // prepend http if missing from url
     if (!url.match(/^[a-zA-Z]+:\/\//)) {
       url = `http://${url}`
     }
-
-    createPost(title, url)
-
-    // reset form
-    e.target.elements.title.value = ''
-    e.target.elements.url.value = ''
+    props.createPost(values.title, url)
+  } catch(e) {
+    return Promise.reject(new SubmissionError({_error: e.toString()}));
   }
+}
+
+const renderField = ({ input, label, type, placeholder, meta: { touched, error, warning } }) => (
+    <FormGroup validationState={(touched && error)?"error" : null}>
+        <FormControl placeholder={placeholder} type={type} {...input}/>
+        {touched && error && <span className="help-block">{error}</span>}
+    </FormGroup>
+)
+
+function Submit ({ handleSubmit, resetForm, submitting, error }) {
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Submit</h1>
-      <input placeholder='title' name='title' />
-      <input placeholder='url' name='url' />
-      <button type='submit'>Submit</button>
-      <style jsx>{`
-        form {
-          border-bottom: 1px solid #ececec;
-          padding-bottom: 20px;
-          margin-bottom: 20px;
-        }
-        h1 {
-          font-size: 20px;
-        }
-        input {
-          display: block;
-          margin-bottom: 10px;
-        }
-      `}</style>
+    <form onSubmit={handleSubmit(submit)}>
+      <h1>Create Post</h1>
+      {error && <div className="alert alert-danger">{error}</div>}
+      <Field name="title" type="text" component={renderField} placeholder="title"/>
+      <Field name="url" type="text" component={renderField} placeholder="url"/>
+      <Button type='submit'>Submit</Button>
     </form>
   )
 }
@@ -78,4 +78,7 @@ export default graphql(createPost, {
       }
     })
   })
-})(Submit)
+})(reduxForm({
+    form: 'postForm',
+    validate
+})(Submit))

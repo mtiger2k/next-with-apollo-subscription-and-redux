@@ -1,9 +1,10 @@
-import App from '../components/App'
-import Header from '../components/Header'
+import Layout from '../components/Layout'
+import withData from '../lib/withData'
+import { authenticate } from '../utils/AuthService'
 
-export default (props) => (
-  <App>
-    <Header pathname={props.url.pathname} />
+const Page =  (props) => (
+  <Layout user={props.user}>
+    <div className="container">
     <article>
       <h1>The Idea Behind This Example</h1>
       <p>
@@ -19,5 +20,13 @@ export default (props) => (
         This example relies on <a href='http://graph.cool'>graph.cool</a> for its GraphQL backend.
       </p>
     </article>
-  </App>
+    </div>
+  </Layout>
 )
+
+Page.getInitialProps = async ({ req, res }) => {
+  const user = await authenticate(req, res);
+  return { user };
+}
+
+export default withData(Page)
