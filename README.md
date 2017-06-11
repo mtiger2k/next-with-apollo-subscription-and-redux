@@ -1,27 +1,35 @@
-[![Deploy to now](https://deploy.now.sh/static/button.svg)](https://deploy.now.sh/?repo=https://github.com/zeit/next.js/tree/master/examples/with-apollo-and-redux)
 # Apollo & Redux Example
+
+
+## Features
+
+This app demostrates the following features:
+
+* [Next.js](https://github.com/zeit/next.js)
+* [Redux](https://github.com/reactjs/redux)
+* [Apollo](https://github.com/reactjs/redux)
+* [Apollo subscription](https://github.com/Goluis/with-apollo-subscriptions)
+* [Apollo upload server](https://github.com/jaydenseric/apollo-upload-server)
+* [Apollo upload client](https://github.com/jaydenseric/apollo-upload-client)
+* [redux-form](https://github.com/erikras/redux-form)
+* [React-bootstrap](https://github.com/react-bootstrap/react-bootstrap)
 
 ## How to use
 
-Download the example [or clone the repo](https://github.com/zeit/next.js):
+Install mongodb and configure in .env
+
+Install it and run server:
 
 ```bash
-curl https://codeload.github.com/zeit/next.js/tar.gz/master | tar -xz --strip=2 next.js-master/examples/with-apollo-and-redux
-cd with-apollo-and-redux
-```
-
-Install it and run:
-
-```bash
+cd ./server
 npm install
 npm run dev
 ```
 
-Deploy it to the cloud with [now](https://zeit.co/now) ([download](https://zeit.co/download)):
+Install it and run server:
 
 ```bash
-now
+cd ./client
+npm install
+npm run dev
 ```
-
-## The idea behind the example
-By default, Apollo Client creates its own internal Redux store to manage queries and their results. If you are already using Redux for the rest of your app, [you can have the client integrate with your existing store instead](http://dev.apollodata.com/react/redux.html). This example is identical to the [`with-apollo`](https://github.com/zeit/next.js/tree/master/examples/with-apollo) with the exception of this Redux store integration.
