@@ -1,5 +1,6 @@
 # Apollo & Redux Example
 
+This app is based Next.js with apollo-redux, includes features like login/register, upload, using react-bootstrap as UI.
 
 ## Features
 
