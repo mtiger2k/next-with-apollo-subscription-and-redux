@@ -2,5 +2,12 @@
   "presets": [
     "env",
     "next/babel"
+  ],
+  "plugins": [
+    ["module-alias", [
+      { "src": "./src/utils", "expose": "utils" },
+      { "src": "./src/components", "expose": "awesome/components" },
+      { "src": "npm:lodash", "expose": "underscore" }
+    ]]
   ]
 }

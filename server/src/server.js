@@ -45,7 +45,6 @@ const graphiqlOptions = {
 const tokenParser = () => {
   return (req, res, next) => {
     let token = req.query['access_token'];
-
     // Parse Bearer Token
     if (req.headers['authorization']) {
       const splits = req.headers['authorization'].split(' ');
@@ -93,19 +92,19 @@ server.use(tokenParser());
       uploadDir: '/tmp/uploads'
     }),
     graphqlExpress(req => {
-    const query = req.query.query || req.body.query
-    if (query && query.length > 2000) {
-      throw new Error('Query too large.')
-    }
-
-    return {
-      schema,
-      graphiql:true,
-      pretty: true,
-      rootValue: {
-        user: req.user
+      const query = req.query.query || req.body.query
+      if (query && query.length > 2000) {
+        throw new Error('Query too large.')
       }
-    }
+
+      return {
+        schema,
+        graphiql:true,
+        pretty: true,
+        rootValue: {
+          user: req.user
+        }
+      }
   }))
 
   server.use(graphiqlPath, graphiqlExpress(graphiqlOptions))

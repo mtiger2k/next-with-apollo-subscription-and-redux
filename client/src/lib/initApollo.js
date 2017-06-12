@@ -2,6 +2,7 @@ import { ApolloClient } from 'react-apollo'
 import {createNetworkInterface} from 'apollo-upload-client'
 import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws'
 import fetch from 'isomorphic-fetch'
+import cookie from "react-cookie"
 
 const GRAPHQL_URL = 'http://localhost:4000/graphql'
 const WS_URL = 'ws://localhost:4000/subscriptions'
@@ -22,6 +23,17 @@ function create () {
       credentials: 'same-origin'
     }
   })
+
+  networkInterface.use([{
+    applyMiddleware(req, next) {
+      if (!req.options.headers) {
+        req.options.headers = {};  // Create the header object if needed.
+      }
+      // get the authentication token from local storage if it exists
+      req.options.headers.authorization = cookie.load('token')?('Bearer '+cookie.load('token')) : null;
+      next();
+    }
+  }]);
 
   if (!ssrMode) {
     const wsClient = new SubscriptionClient(WS_URL, {
