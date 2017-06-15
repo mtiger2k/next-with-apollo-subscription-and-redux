@@ -14,7 +14,7 @@ class PostPage extends React.Component {
 
   render() {
 	return (
-	  <Layout user={this.props.user} title='Post List'>
+	  <Layout user={this.props.user} title='Remote submit'>
 	    <div className="container">
 	    <RemoteSubmitForm />
 	    <RemoteSubmitButton />
